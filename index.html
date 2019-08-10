@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Word Guess Game</title>
+
+</head>
+<body>
+   
+
+    <h1>Hangman</h1>
+
+    <p>Press any key to get started!</p>
+    <p>Curresnt Word</p>
+    <div id='mystery'>?</div>
+    <p>Guesses remaining</p>
+    <div id='remaining'>?</div>
+    <p>Letters Guessed</p>
+    <div id=lettersGuessed></div>
+    <p>You have this many wins <span id='winner'></span></p>
+    <p>You have this many losses <span id='loser'></span></p>
+    <button onclick=setUp()>reset</button>
+
+    <script type="text/javascript">
+         
+    const words = ["lamar", "congress", "burnet", "lavaca"];
+
+    let remaining = 13
+    let j;
+    let lettersGuessed = []
+    let firstNumber = ''
+    let won = parseInt(0) 
+    let loss = 0
+    let answer = []; 
+    let mystery = []
+    let word = []
+    let start = []
+
+    let mysteryDOM = document.querySelector('#mystery');
+    let remainingDOM = document.querySelector('#remaining');
+    let lettersGuessedDOM = document.querySelector('#lettersGuessed');
+    let winnerDOM = document.querySelector('#winner');
+    let lossDOM = document.querySelector('#loser')
+    
+    setUp()
+    
+ 
+    function setUp() {
+        start = []
+        remaining = 13
+        lettersGuessed = []
+        let newWord = Math.floor(Math.random() * words.length);
+        word = words[newWord]; 
+        console.log(newWord); 
+        console.log(word)
+
+        for (let i = 0; i < word.length; i++) {
+            start.push('_');
+            console.log(start) 
+        }
+
+        mystery = word.split('')
+        console.log(mystery)
+        mysteryDOM.textContent = start; 
+        remainingDOM.textContent = remaining;
+        lettersGuessedDOM.textContent = lettersGuessed;
+
+    }
+
+
+
+    
+
+    mysteryDOM.textContent = start; 
+    remainingDOM.textContent = remaining;
+    winnerDOM.textContent = won  
+    lossDOM.textContent = loss 
+    
+    document.onkeyup = function(e) {
+    
+        let playerChoice = e.key;
+        let playerChoiceLower = playerChoice.toLowerCase();
+        console.log(playerChoiceLower);  
+        i = mystery.indexOf(playerChoiceLower)            
+        
+        for (let i = 0; i < word.length; i++) {
+            if (playerChoiceLower == mystery[i]) {
+                    console.log('working')
+                    start[i] = playerChoiceLower;
+                    console.log(start[i])
+                    mysteryDOM.textContent = start;
+            }
+        }
+
+        if (playerChoiceLower !== mystery[i]) {
+            --remaining;
+            remainingDOM.textContent = remaining
+            console.log(remaining)
+            lettersGuessed.push(playerChoiceLower)
+            lettersGuessedDOM.textContent = lettersGuessed
+        }
+    
+        let winner = start.join('')
+        console.log(winner)
+        
+        if (winner === word) {
+            alert('winner')
+            parseInt(won++)
+            winnerDOM.textContent = parseInt(won)
+            setUp()
+        }
+        
+        if (remaining <= 0) {
+            alert('loser')
+            loss++
+            lossDOM.textContent = loss
+            setUp()            
+            } 
+    }
+</script>
+</body>
+</html>
